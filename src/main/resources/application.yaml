@@ -6,3 +6,7 @@ spring:
     username: app_user
     password: app_pass
     driver-class-name: oracle.jdbc.OracleDriver
+  logging:
+    level:
+      root: INFO
+      com.ordersystem.customers: INFO

@@ -60,4 +60,15 @@ public class CustomerResponse {
     public void setActive(String active) {
         this.active = active;
     }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "customerId='" + customerId + '\'' +
+                ", name=" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", createdAt=" + createdAt +
+                ", active='" + active + '\'' +
+                '}';
+    }
 }

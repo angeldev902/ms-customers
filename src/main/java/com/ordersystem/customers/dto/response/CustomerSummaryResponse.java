@@ -50,4 +50,14 @@ public class CustomerSummaryResponse {
     public void setCreatedAt(LocalDate createdAt) {
         this.createdAt = createdAt;
     }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "customerId='" + customerId + '\'' +
+                ", name=" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", createdAt=" + createdAt +
+                '}';
+    }
 }

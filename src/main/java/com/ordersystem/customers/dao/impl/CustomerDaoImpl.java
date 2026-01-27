@@ -65,6 +65,8 @@ public class CustomerDaoImpl implements CustomerDao {
     @Override
     public List<CustomerSummaryResponse> findAll() {
 
+        log.debug("Calling PKG_CLIENTES.LISTAR_CLIENTES");
+
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTemplate)
                 .withCatalogName("PKG_CLIENTES")
                 .withProcedureName("LISTAR_CLIENTES")
@@ -80,6 +82,8 @@ public class CustomerDaoImpl implements CustomerDao {
      */
     @Override
     public CustomerResponse findById(Long customerId) {
+
+        log.debug("Calling PKG_CLIENTES.OBTENER_CLIENTE customerId={}", customerId);
 
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTemplate)
                 .withCatalogName("PKG_CLIENTES")
@@ -106,6 +110,8 @@ public class CustomerDaoImpl implements CustomerDao {
     @Override
     public Long createCustomer(CustomerUpsertRequest request) {
 
+        log.debug("Calling PKG_CLIENTES.CREAR_CLIENTE");
+
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTemplate)
                 .withCatalogName("PKG_CLIENTES")
                 .withProcedureName("CREAR_CLIENTE")
@@ -131,6 +137,8 @@ public class CustomerDaoImpl implements CustomerDao {
     @Override
     public void updateCustomer(Long customerId, CustomerUpsertRequest request) {
 
+        log.debug("Calling PKG_CLIENTES.ACTUALIZAR_CLIENTE customerId={}", customerId);
+
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTemplate)
                 .withCatalogName("PKG_CLIENTES")
                 .withProcedureName("ACTUALIZAR_CLIENTE")
@@ -155,6 +163,8 @@ public class CustomerDaoImpl implements CustomerDao {
     @Override
     public void deleteCustomer(Long customerId) {
 
+        log.debug("Calling PKG_CLIENTES.DESACTIVAR_CLIENTE customerId={}", customerId);
+
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTemplate)
                 .withCatalogName("PKG_CLIENTES")
                 .withProcedureName("DESACTIVAR_CLIENTE")
@@ -175,7 +185,7 @@ public class CustomerDaoImpl implements CustomerDao {
     @Override
     public CustomerPageResponse customerPage(int page, int size) {
 
-        log.info("Result customers page={}, size={}", page, size);
+        log.debug("Calling PKG_CLIENTES.CLIENTES_PAGINADOS page={} size={}", page, size);
 
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTemplate)
                 .withCatalogName("PKG_CLIENTES")
@@ -183,9 +193,9 @@ public class CustomerDaoImpl implements CustomerDao {
                 .declareParameters(
                         new SqlParameter("p_pagina", Types.NUMERIC),
                         new SqlParameter("p_por_pagina", Types.NUMERIC),
-                        new SqlOutParameter("p_total", Types.NUMERIC),
-                        new SqlOutParameter("p_cursor", Types.REF_CURSOR)
-                );
+                        new SqlOutParameter("p_total", Types.NUMERIC)
+                )
+                .returningResultSet("p_cursor", customerSumaryRowMapper);
 
         Map<String, Object> result = jdbcCall.execute(
                 Map.of(
@@ -197,8 +207,6 @@ public class CustomerDaoImpl implements CustomerDao {
         List<CustomerSummaryResponse> customers = (List<CustomerSummaryResponse>) result.get("p_cursor");
         BigDecimal totalBD = (BigDecimal) result.get("p_total");
         Long total = totalBD.longValue();
-
-        log.info("Total customers total={}", total);
 
         return new CustomerPageResponse(total, customers);
 

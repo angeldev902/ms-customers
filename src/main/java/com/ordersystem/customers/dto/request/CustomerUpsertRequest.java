@@ -29,4 +29,12 @@ public class CustomerUpsertRequest {
     public String getEmail() {
         return email;
     }
+
+    @Override
+    public String toString() {
+        return "CustomerUpsertRequest {" +
+                "name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }
