@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: customers
+  datasource:
+    url: jdbc:oracle:thin:@//localhost:1521/XEPDB1
+    username: app_user
+    password: app_pass
+    driver-class-name: oracle.jdbc.OracleDriver
