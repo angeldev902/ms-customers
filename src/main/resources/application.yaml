@@ -6,7 +6,23 @@ spring:
     username: app_user
     password: app_pass
     driver-class-name: oracle.jdbc.OracleDriver
-  logging:
-    level:
-      root: INFO
-      com.ordersystem.customers: INFO
+
+logging:
+  level:
+    root: INFO
+    com.ordersystem.customers: INFO
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    info:
+      enabled: true
+
+info:
+  app:
+    name: customers-service
+    description: Customers microservice
+    version: 1.0.0
