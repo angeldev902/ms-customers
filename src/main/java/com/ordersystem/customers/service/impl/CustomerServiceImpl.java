@@ -13,6 +13,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -51,6 +52,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Transactional
     public CustomerUpsertResponse createCustomer(
             CustomerUpsertRequest request
     ) {
@@ -75,12 +77,14 @@ public class CustomerServiceImpl implements CustomerService {
                 throw new ConflictException("A customer with this email already exists");
             }
 
-            log.error("Error creating customer", ex);
+            log.error("Unexpected error creating customer", ex);
             throw ex;
+
         }
     }
 
     @Override
+    @Transactional
     public CustomerUpsertResponse updateCustomer(
             Long customerId,
             CustomerUpsertRequest request
@@ -118,6 +122,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Transactional
     public CustomerDeleteResponse deleteCustomer(
             Long customerId
     ) {
