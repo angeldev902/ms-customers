@@ -1,16 +1,6 @@
 spring:
   application:
     name: customers
-  datasource:
-    url: jdbc:oracle:thin:@//localhost:1521/XEPDB1
-    username: app_user
-    password: app_pass
-    driver-class-name: oracle.jdbc.OracleDriver
-
-logging:
-  level:
-    root: INFO
-    com.ordersystem.customers: INFO
 
 management:
   endpoints:
@@ -20,9 +10,16 @@ management:
   endpoint:
     info:
       enabled: true
+  info:
+    defaults:
+      enabled: true
 
 info:
   app:
     name: customers-service
     description: Customers microservice
     version: 1.0.0
+
+logging:
+  level:
+    com.ordersystem.customers: INFO
