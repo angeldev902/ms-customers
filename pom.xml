@@ -8,7 +8,7 @@
 		<version>4.0.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.ordersystem</groupId>
+    <groupId>com.ordersystem</groupId>
 	<artifactId>ms-customers</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>customers</name>
