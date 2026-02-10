@@ -1,6 +1,7 @@
 package com.ordersystem.customers.service.impl;
 
 import com.ordersystem.customers.dao.CustomerDao;
+import com.ordersystem.customers.domain.publisher.CustomerEventPublisher;
 import com.ordersystem.customers.dto.request.CustomerUpsertRequest;
 import com.ordersystem.customers.dto.response.*;
 import com.ordersystem.customers.exception.ConflictException;
@@ -18,12 +19,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
+    private final CustomerEventPublisher eventPublisher;
+
     private static final Logger log = LoggerFactory.getLogger(CustomerServiceImpl.class);
 
     private final CustomerDao customerDao;
 
-    public CustomerServiceImpl(CustomerDao customerDao) {
+    public CustomerServiceImpl(CustomerDao customerDao, CustomerEventPublisher eventPublisher) {
         this.customerDao = customerDao;
+        this.eventPublisher = eventPublisher;
     }
 
     @Override
@@ -64,6 +68,8 @@ public class CustomerServiceImpl implements CustomerService {
 
             log.info("Customer created customerId={}", customerId);
 
+            eventPublisher.publishCustomerCreated(customerId);
+
             return new CustomerUpsertResponse(
                     customerId,
                     "Customer created"
@@ -95,6 +101,8 @@ public class CustomerServiceImpl implements CustomerService {
             customerDao.updateCustomer(customerId, request);
 
             log.info("Customer updated customerId={}", customerId);
+
+            eventPublisher.publishCustomerUpdated(customerId);
 
             return new CustomerUpsertResponse(
                     customerId,
@@ -132,6 +140,8 @@ public class CustomerServiceImpl implements CustomerService {
             customerDao.deleteCustomer(customerId);
 
             log.info("Customer deleted customerId={}", customerId);
+
+            eventPublisher.publishCustomerDeleted(customerId);
 
             return new CustomerDeleteResponse(
                     "Customer deleted"

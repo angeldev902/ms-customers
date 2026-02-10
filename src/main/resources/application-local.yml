@@ -4,6 +4,9 @@ spring:
     username: ${DB_USER}
     password: ${DB_PASSWORD}
     driver-class-name: oracle.jdbc.OracleDriver
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+
 
 server:
   port: 8080
@@ -11,3 +14,4 @@ server:
 logging:
   level:
     root: INFO
+
