@@ -1,6 +1,7 @@
 package com.ordersystem.customers.service;
 
 import com.ordersystem.customers.dao.CustomerDao;
+import com.ordersystem.customers.domain.publisher.CustomerEventPublisher;
 import com.ordersystem.customers.dto.request.CustomerUpsertRequest;
 import com.ordersystem.customers.dto.response.*;
 import com.ordersystem.customers.exception.ConflictException;
@@ -25,6 +26,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CustomerServiceImplTest {
     @Mock
     private CustomerDao customerDao;
+
+    @Mock
+    private CustomerEventPublisher eventPublisher;
 
     @InjectMocks
     private CustomerServiceImpl customerService;
@@ -108,6 +112,7 @@ public class CustomerServiceImplTest {
         assertThat(result.getMessage()).isEqualTo("Customer created");
 
         verify(customerDao).createCustomer(customerUpsertRequest);
+        verify(eventPublisher).publishCustomerCreated(customerId);
         //verifyNoMoreInteractions(customerDao);
 
     }
@@ -146,6 +151,7 @@ public class CustomerServiceImplTest {
         assertThat(result.getMessage()).isEqualTo("Customer updated");
 
         verify(customerDao).updateCustomer(customerId, customerUpsertRequest);
+        verify(eventPublisher).publishCustomerUpdated(customerId);
         //verifyNoMoreInteractions(customerDao);
 
     }
@@ -202,6 +208,7 @@ public class CustomerServiceImplTest {
         assertThat(result.getMessage()).isEqualTo("Customer deleted");
 
         verify(customerDao).deleteCustomer(customerId);
+        verify(eventPublisher).publishCustomerDeleted(customerId);
         //verifyNoMoreInteractions(customerDao);
 
     }
