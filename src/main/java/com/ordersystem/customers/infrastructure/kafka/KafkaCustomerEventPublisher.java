@@ -19,31 +19,37 @@ public class KafkaCustomerEventPublisher implements CustomerEventPublisher {
     private final KafkaTemplate<String, CustomerEvent> kafkaTemplate;
 
     @Override
-    public void publishCustomerCreated(Long customerId) {
+    public void publishCustomerCreated(Long customerId, String name, String email) {
         publish(
                 new CustomerEvent(
                         CustomerEventType.CUSTOMER_CREATED,
-                        customerId
+                        customerId,
+                        name,
+                        email
                 )
         );
     }
 
     @Override
-    public void publishCustomerUpdated(Long customerId) {
+    public void publishCustomerUpdated(Long customerId, String name, String email) {
         publish(
                 new CustomerEvent(
                         CustomerEventType.CUSTOMER_UPDATED,
-                        customerId
+                        customerId,
+                        name,
+                        email
                 )
         );
     }
 
     @Override
-    public void publishCustomerDeleted(Long customerId) {
+    public void publishCustomerDeleted(Long customerId, String name, String email) {
         publish(
                 new CustomerEvent(
                         CustomerEventType.CUSTOMER_DELETED,
-                        customerId
+                        customerId,
+                        name,
+                        email
                 )
         );
     }

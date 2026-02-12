@@ -68,7 +68,7 @@ public class CustomerServiceImpl implements CustomerService {
 
             log.info("Customer created customerId={}", customerId);
 
-            eventPublisher.publishCustomerCreated(customerId);
+            eventPublisher.publishCustomerCreated(customerId, request.getName(), request.getEmail());
 
             return new CustomerUpsertResponse(
                     customerId,
@@ -102,7 +102,7 @@ public class CustomerServiceImpl implements CustomerService {
 
             log.info("Customer updated customerId={}", customerId);
 
-            eventPublisher.publishCustomerUpdated(customerId);
+            eventPublisher.publishCustomerUpdated(customerId, request.getName(), request.getEmail());
 
             return new CustomerUpsertResponse(
                     customerId,
@@ -141,7 +141,9 @@ public class CustomerServiceImpl implements CustomerService {
 
             log.info("Customer deleted customerId={}", customerId);
 
-            eventPublisher.publishCustomerDeleted(customerId);
+            CustomerResponse customer = customerDao.findById(customerId);
+
+            eventPublisher.publishCustomerDeleted(customerId, customer.getName(), customer.getEmail());
 
             return new CustomerDeleteResponse(
                     "Customer deleted"
